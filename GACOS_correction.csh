@@ -77,7 +77,7 @@ foreach dir (`awk '{print $1}' $list`)
                 cd $intf_dir
                 #Link trans.dat to each folder. Neccesary to project ztd grids to radar coordinates
                 ln -s $topo_dir"trans.dat"
-                gacos_operation.csh $first_ztd $first_rsc $second_ztd $second_rsc $reference_point_ra $incidence
+                operation.csh $first_ztd $first_rsc $second_ztd $second_rsc $reference_point_ra $incidence
                 rm trans.dat
 
         else
