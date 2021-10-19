@@ -4,3 +4,5 @@ These scripts are intended to correct unwrap phases using GACOS grids for GMTSAR
 They have been tested with:
 GMT v6.1.0
 GMTSAR v6.0
+
+Feel free to use and edit the code if needed
