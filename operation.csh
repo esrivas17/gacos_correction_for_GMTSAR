@@ -80,4 +80,4 @@ gmt grdtrend unwrap_GACOS_corrected.grd -N3r -Dunwrap_GACOS_corrected_detrended.
 rm date1_ztd.grd date2_ztd.grd
 rm zpddm.grd zpddm_ra.grd resample_zpddm.grd
 rm szpddm_phase.grd
-echo "corrections done with $date_ztd_d1 and $ date_ztd_d2"
+echo "corrections done with $date_ztd_d1 and $date_ztd_d2"
