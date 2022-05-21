@@ -1,0 +1,1 @@
+./operation_test.csh ../example/20160125.ztd ../example/20160125.ztd.rsc ../example/20160206.ztd ../example/20160206.ztd.rsc ../example/20160125-20160206.phs ../example/20160125-20160206.phs.rsc ref_point 0

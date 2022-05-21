@@ -10,7 +10,7 @@ if ($#argv != 5) then
     echo "Script needs to be run inside the intf_all folder" 
     echo "Performs gacos correction"
     echo ""
-    echo "list_interferograms: list of folders inside the intf_all folder containing the unwrap phase grids"
+    echo "list_interferograms: list of folders inside the intf_all folder containing the phases and coherence grids"
     echo ""
     echo "full_path_to_GACOS_data"
     echo "Example: /home/erikr/gacos/"
@@ -26,7 +26,7 @@ if ($#argv != 5) then
     echo ""
     echo "Indicence angle in degrees from SAT_look "
     echo ""
-    echo "Outputs: unwrap phases corrected and added as additional products in each interferogram folder"
+    echo "Outputs: phasefilt.grd files corrected and added as additional products in each interferogram folder. These outputs should be used for the unwrap processing"
     exit 1
 endif
 
@@ -76,7 +76,7 @@ foreach dir (`awk '{print $1}' $list`)
 		cd $intf_dir
        	 	#Link trans.dat to each folder. Neccesary to project ztd grids to radar coordinates
         	ln -s $topo_dir"trans.dat"
-        	gacos_operation.csh $first_ztd $first_rsc $second_ztd $second_rsc $reference_point_ra $incidence
+        	operation.csh $first_ztd $first_rsc $second_ztd $second_rsc $reference_point_ra $incidence
         	rm trans.dat
 
 	else

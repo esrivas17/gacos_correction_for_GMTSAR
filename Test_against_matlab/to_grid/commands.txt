@@ -1,0 +1,2 @@
+./convert_phs_to_grd.csh ../example/phase-ztd ../example/phase-ztd.rsc
+./convert_phs_to_grd.csh ../example/phase-ztd-pnanar ../example/phase-ztd-planar.rsc

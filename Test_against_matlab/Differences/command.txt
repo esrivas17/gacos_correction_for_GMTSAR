@@ -1,0 +1,4 @@
+gmt grdmath ../My_correction/phase_GACOS_corrected_cm.grd ../to_grid/phase-ztd.grd SUB = diff_correction.grd
+gmt grdmath ../My_correction/phase_GACOS_corrected_cm_detrended.grd ../to_grid/phase-ztd-pnanar.grd SUB = diff_correction_detrended.grd
+gmt grdinfo diff_correction.grd -V
+gmt grdinfo diff_correction_detrended.grd -V

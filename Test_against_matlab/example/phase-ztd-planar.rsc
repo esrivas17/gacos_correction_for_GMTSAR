@@ -1,0 +1,16 @@
+WIDTH  4940
+FILE_LENGTH   2111
+XMIN          1
+XMAX          4940
+YMIN          1
+YMAX          2111
+X_FIRST       -2.5700000
+Y_FIRST       52.9066667
+X_STEP        8.3333333e-04
+Y_STEP        -8.3333333e-04
+X_UNIT        degres
+Y_UNIT        degres
+Z_OFFSET      0
+Z_SCALE       1
+PROJECTION    LATLON
+DATUM         WGS84
