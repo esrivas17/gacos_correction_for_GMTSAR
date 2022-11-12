@@ -2,13 +2,13 @@ These scripts are intended to correct wrapped phases using GACOS grids for GMTSA
 
 They have been tested with: GMT v6.1.0 GMTSAR v6.0
 
-On "Test_against_matlab" folder, I perform comparisonis with matlab with consistent results.
+On "Test_against_matlab" folder, I perform comparisons with matlab with consistent results.
 To reproduce the output just use: source command.txt in each folder.
 There is a small README file in each folder
 
 single_GACOS_correction.csh is intented to correct a single interferogram at a time with certain parameters
 
-GACOS_correction.csh and operation.csh are used to correct a stack of interferogram in a time series process
+GACOS_correction.csh and operation.csh are used to correct a stack of interferograms in a time series process
 
 Feel free to use and edit the code if needed
 
