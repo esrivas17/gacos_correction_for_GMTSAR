@@ -81,6 +81,11 @@ cat $out_ratll |awk '{print $1, $2}' > $reference_point_ra
 
 #FOR LOOP OVER LIST OF INTERFEROGRAMS
 foreach dir (`awk '{print $1}' $list`)
+        if !(-d $dir) then
+            echo "$dir directory seems not to exist"
+            exit 1
+        endif
+ 
 	cd $dir
 	
 	#Check if there are only two SLC files (not sure if this step is neccessary)
@@ -115,6 +120,7 @@ foreach dir (`awk '{print $1}' $list`)
 	else
 
 		echo "GACOS files do not exist / Wrong directory"
+                exit 1
 
 	endif
 	
