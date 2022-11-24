@@ -2,15 +2,14 @@
 
 if ($#argv != 6) then
     echo ""
-    echo "Usage: gacos_operation.csh master_ztd master_ztd.rsc slave_ztd slave_ztd.rsc reference_point incidence_angle"
+    echo "Usage: operation.csh master_ztd master_ztd.rsc slave_ztd slave_ztd.rsc reference_point incidence_angle"
     echo "  Performs gacos correction over the phasefilt.grd files for Sentinel 1"
     echo ""
-    echo "It works in each directory where the phase grids are located "
+    echo "It works in each directory where the phase grids are located. This script works jointly with GACOS_correction.csh"
     echo ""
-    echo "Reference point in radar coordinates"
+    echo "Reference point in radar coordinates (text file)"
     echo ""
-    echo ""
-    echo "Indicence angle in degrees from SAT_look "
+    echo "Indicence angle in degrees from SAT_look (float/integer)"
     echo ""
     exit 1
  endif
