@@ -2,19 +2,46 @@
 
 if ($#argv != 7) then
     echo ""
-    echo "Usage: single_GACOS_correction.csh master_ztd master_ztd.rsc slave_ztd slave_ztd.rsc intf_phase.grd reference point incidence angle" 
+    echo "Usage: single_GACOS_correction.csh master_ztd master_ztd.rsc slave_ztd slave_ztd.rsc intf_phase.grd reference_point incidence_angle" 
     echo	""
     echo "Performs gacos correction for Sentinel 1 for a single interferogram in grd format"
     echo ""
     echo "Output: wrapped phase"
     echo ""
-    echo "Reference point file in lon/lat"
+    echo "Reference point text file in lon lat format"
     echo ""
     echo ""
-    echo "Indicence angle in degrees, in this case 0 "
+    echo "Indicence angle in degrees (float or integer)"
     echo ""
     exit 1
  endif
+
+#Checking input files
+if !(-e $1) then
+    echo "master_ztd binary file: $1 seems not to exist"
+    exit 1
+endif
+if !(-e $2) then
+    echo "master_ztd.rsc file: $2 seems not to exist"
+    exit 1
+endif
+if !(-e $3) then
+    echo "slave_ztd binary file: $3 seems not to exist"
+    exit 1
+endif
+if !(-e $4) then
+    echo "slave_ztd.rsc file: $4 seems not to exist"
+    exit 1
+endif
+if !(-e $5) then
+    echo "Interferogram to correct: $5 seems not to exist"
+    exit 1
+endif
+if !(-e $6) then
+    echo "Reference point text file: $6 seems not to exist"
+    exit 1
+endif
+
 
 #reference point/stable point in radar coordinates
 set reference_point = $6

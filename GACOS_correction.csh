@@ -24,7 +24,7 @@ if ($#argv != 5) then
     echo ""
     echo "Reference point in lon lat coordinates (text file)"
     echo ""
-    echo "Indicence angle in degrees from SAT_look "
+    echo "Indicence angle in degrees from SAT_look (float/integer)"
     echo ""
     echo "Outputs: phasefilt.grd files corrected and added as additional products in each interferogram folder. These outputs should be used for the unwrap processing"
     exit 1
