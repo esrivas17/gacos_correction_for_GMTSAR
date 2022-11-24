@@ -22,7 +22,7 @@ if ($#argv != 5) then
     echo ""
     echo "list_interferograms: list of folders with interferograms created"
     echo ""
-    echo "Reference point in lon lat coordinates"
+    echo "Reference point in lon lat coordinates (text file)"
     echo ""
     echo "Indicence angle in degrees from SAT_look "
     echo ""
@@ -36,14 +36,47 @@ set topo_dir = $3
 set reference_point = $4
 set incidence = $5
 
+#Checking inputs
+if !(-e $list) then
+    echo "$list seems not to exist"
+    exit 1
+endif
+if !(-d $GACOS_dir) then
+    echo "$GACOS_dir seems not to exist"
+    exit 1
+endif
+if !(-d $topo_dir) then
+    echo "$topo_dir seems not to exist"
+    exit 1
+endif
+if !(-f $reference_point) then
+    echo "Reference point file: $reference_point seems not to exist. Provide a text file with lon lat values"
+    exit 1
+endif
+
+
 #PROJECT POINT FROM LON-LAT TO RADAR COORDINATES
-rm $topo_dir"ref.llh" $topo_dir"out.ratll" $topo_dir"ref_point.ra"
-gmt grdtrack $reference_point -G$topo_dir"dem.grd" >> $topo_dir"ref.llh"
-ln -s $topo_dir*.LED .
-SAT_llt2rat $topo_dir"master.PRM" 0 < $topo_dir"ref.llh" > $topo_dir"out.ratll"
-rm *.LED
-cat $topo_dir"out.ratll" |awk '{print $1, $2}' > $topo_dir"ref_point.ra"
+set ref_llh = $topo_dir"ref.llh"
+set out_ratll = $topo_dir"out.ratll"
 set reference_point_ra = $topo_dir"ref_point.ra"
+if (-f $ref_llh) then
+    echo "Removing old $ref_llh"
+    rm $ref_llh
+endif
+if (-f $out_ratll) then
+    echo "Removing old $out_ratll"
+    rm $out_ratll
+endif
+if (-f $reference_point_ra) then
+    echo "Removing old $reference_point_ra"
+    rm $reference_point_ra
+endif
+
+gmt grdtrack $reference_point -G$topo_dir"dem.grd" >> $ref_llh
+ln -s $topo_dir*.LED .
+SAT_llt2rat $topo_dir"master.PRM" 0 < $topo_dir"ref.llh" > $out_ratll
+rm *.LED
+cat $out_ratll |awk '{print $1, $2}' > $reference_point_ra
 #----------------------------------------------#
 
 #FOR LOOP OVER LIST OF INTERFEROGRAMS
