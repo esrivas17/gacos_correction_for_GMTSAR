@@ -66,6 +66,12 @@ set ref_value_phase = `gmt grdtrack $reference_point -Gphasefilt.grd -Z`
 gmt grdmath resample_zpddm.grd $ref_value SUB = szpddm.grd
 gmt grdmath phasefilt.grd $ref_value_phase SUB = phasefilt_ref.grd
 
+#Checking reference point values
+if ($ref_value == "" || $ref_value_phase == "") then
+    echo "Problems with the reference point. Is the reference point within the AOI?"
+    exit 1
+endif
+
 #FROM METER TO PHASE
 gmt grdmath szpddm.grd 4 MUL $pi MUL $wavelength DIV = szpddm_phase.grd
 
