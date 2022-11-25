@@ -80,6 +80,12 @@ gmt grdmath phasefilt_ref.grd szpddm_phase_LOS.grd SUB = phasefilt_GACOS_correct
 #DETRENDING
 gmt grdtrend phasefilt_GACOS_corrected.grd -N3r -Dphasefilt_GACOS_corrected_detrended.grd
 
+#checking existence of final outputs
+if !(-f phasefilt_GACOS_corrected.grd || -f phasefilt_GACOS_corrected_detrended.grd) then
+    echo "Seems like there was an issue correcting with GACOS $1 and $3"
+    exit 1
+endif
+
 #clean up
 #
 rm date1_ztd.grd date2_ztd.grd
