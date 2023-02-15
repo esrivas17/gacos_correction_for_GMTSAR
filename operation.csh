@@ -1,8 +1,8 @@
 #!/bin/csh -f
 
-if ($#argv != 6) then
+if ($#argv != 7) then
     echo ""
-    echo "Usage: operation.csh master_ztd master_ztd.rsc slave_ztd slave_ztd.rsc reference_point incidence_angle"
+    echo "Usage: operation.csh master_ztd master_ztd.rsc slave_ztd slave_ztd.rsc reference_point incidence_angle dem_grid"
     echo "  Performs gacos correction over the phasefilt.grd files for Sentinel 1"
     echo ""
     echo "It works in each directory where the phase grids are located. This script works jointly with GACOS_correction.csh"
@@ -46,6 +46,26 @@ gmt xyz2grd $3 -G"date2_ztd.grd" -RLT$x_first_d2/$y_first_d2/$width_d2/$length_d
 
 #TIME DIFFERENCE
 gmt grdmath date2_ztd.grd date1_ztd.grd SUB = zpddm.grd 
+
+#Checking GACOS grids within the DEM boundaries
+set xmin_dem = `gmt grdinfo -C $7|awk '{print $2}'`
+set xmax_dem = `gmt grdinfo -C $7|awk '{print $3}'`
+set ymin_dem = `gmt grdinfo -C $7|awk '{print $4}'`
+set ymax_dem = `gmt grdinfo -C $7|awk '{print $5}'`
+
+set xmin_gacos = `gmt grdinfo -C zpddm.grd|awk '{print $2}'`
+set xmax_gacos = `gmt grdinfo -C zpddm.grd|awk '{print $3}'`
+set ymin_gacos = `gmt grdinfo -C zpddm.grd|awk '{print $4}'`
+set ymax_gacos = `gmt grdinfo -C zpddm.grd|awk '{print $5}'`
+
+if !($xmin_dem < $xmin_gacos && $ymin_dem < $ymin_gacos && $xmax_dem > $xmax_gacos && $ymax_dem > $ymax_gacos) then
+    echo "Seems like your DEM is not large enough. GACOS grids dimensions must be within the DEM."
+    echo "DEM dimensions: xmin: $xmin_dem xmax: $xmax_dem ymin: $ymin_dem ymax: $ymax_dem"
+    echo "GACOS dimensions: xmin: $xmin_gacos xmax: $xmax_gacos ymin: $ymin_gacos ymax: $ymax_gacos"
+    exit 1
+else:
+    echo "GACOS grid dimensions within DEM boundaries... continue..."
+endif
 
 #PROJECT TO RADAR COORDINATES
 proj_ll2ra.csh trans.dat zpddm.grd zpddm_ra.grd

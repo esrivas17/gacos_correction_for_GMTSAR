@@ -77,6 +77,7 @@ ln -s $topo_dir*.LED .
 SAT_llt2rat $topo_dir"master.PRM" 0 < $topo_dir"ref.llh" > $out_ratll
 rm *.LED
 cat $out_ratll |awk '{print $1, $2}' > $reference_point_ra
+set dem_grd = $topo_dir"dem.grd"
 #----------------------------------------------#
 
 #FOR LOOP OVER LIST OF INTERFEROGRAMS
@@ -114,7 +115,7 @@ foreach dir (`awk '{print $1}' $list`)
 		cd $intf_dir
        	 	#Link trans.dat to each folder. Neccesary to project ztd grids to radar coordinates
         	ln -s $topo_dir"trans.dat"
-        	operation.csh $first_ztd $first_rsc $second_ztd $second_rsc $reference_point_ra $incidence
+        	operation.csh $first_ztd $first_rsc $second_ztd $second_rsc $reference_point_ra $incidence $dem_grd
         	rm trans.dat
 
 	else
