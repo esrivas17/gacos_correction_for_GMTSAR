@@ -58,12 +58,14 @@ set xmax_gacos = `gmt grdinfo -C zpddm.grd|awk '{print $3}'`
 set ymin_gacos = `gmt grdinfo -C zpddm.grd|awk '{print $4}'`
 set ymax_gacos = `gmt grdinfo -C zpddm.grd|awk '{print $5}'`
 
-if !($xmin_dem < $xmin_gacos && $ymin_dem < $ymin_gacos && $xmax_dem > $xmax_gacos && $ymax_dem > $ymax_gacos) then
+set check = `echo "$xmin_dem < $xmin_gacos && $ymin_dem < $ymin_gacos && $xmax_dem > $xmax_gacos && $ymax_dem > $ymax_gacos"| bc`
+
+if ($check == 0) then
     echo "Seems like your DEM is not large enough. GACOS grids dimensions must be within the DEM."
     echo "DEM dimensions: xmin: $xmin_dem xmax: $xmax_dem ymin: $ymin_dem ymax: $ymax_dem"
     echo "GACOS dimensions: xmin: $xmin_gacos xmax: $xmax_gacos ymin: $ymin_gacos ymax: $ymax_gacos"
     exit 1
-else:
+else
     echo "GACOS grid dimensions within DEM boundaries... continue..."
 endif
 
