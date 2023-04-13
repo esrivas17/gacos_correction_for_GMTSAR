@@ -95,7 +95,9 @@ if ($ref_value == "" || $ref_value_phase == "") then
 endif
 
 #FROM METER TO PHASE
-gmt grdmath szpddm.grd 4 MUL $pi MUL $wavelength DIV = szpddm_phase.grd
+#gmt grdmath szpddm.grd 4 MUL $pi MUL $wavelength DIV = szpddm_phase.grd
+#multiplying by -4 instead of 4 (edition: 13/4/2023)
+gmt grdmath szpddm.grd -4 MUL $pi MUL $wavelength DIV = szpddm_phase.grd
 
 #PROJECTION FROM ZENITH VIEW TO LOS
 gmt grdmath szpddm_phase.grd $incidence COSD DIV = szpddm_phase_LOS.grd

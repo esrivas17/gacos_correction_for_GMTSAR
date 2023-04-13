@@ -6,7 +6,7 @@ if ($#argv != 7) then
     echo	""
     echo "Performs gacos correction for Sentinel 1 for a single interferogram in grd format"
     echo ""
-    echo "Output: wrapped phase"
+    echo "Output: corrected unwrapped phase"
     echo ""
     echo "Reference point text file in lon lat format"
     echo ""
@@ -86,7 +86,9 @@ set yinc = `gmt grdinfo -C $5|awk '{print $9}'`
 gmt grdsample zpddm.grd -Gresample_zpddm.grd -R$xmin/$xmax/$ymin/$ymax -I$xinc/$yinc -r
 
 #FROM METERS TO PHASE
-gmt grdmath resample_zpddm.grd $wavelength DIV 4 MUL $pi MUL = resample_zpddm_phs.grd
+#gmt grdmath resample_zpddm.grd $wavelength DIV 4 MUL $pi MUL = resample_zpddm_phs.grd
+# multiplying by -4 (edition 13/4/2023)
+gmt grdmath resample_zpddm.grd $wavelength DIV -4 MUL $pi MUL = resample_zpddm_phs.grd
 
 #REFERENCE POINT
 set ref_value_zpddm = `gmt grdtrack $reference_point -Gresample_zpddm_phs.grd -Z`
