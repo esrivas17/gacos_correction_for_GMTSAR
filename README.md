@@ -1,4 +1,4 @@
-These scripts are intended to correct wrapped phases using GACOS grids for GMTSAR.
+These scripts are intended to correct unwrapped phases using GACOS grids for GMTSAR.
 
 They have been tested with: GMT v6.1.0 GMTSAR v6.0
 

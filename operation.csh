@@ -72,22 +72,36 @@ endif
 #PROJECT TO RADAR COORDINATES
 proj_ll2ra.csh trans.dat zpddm.grd zpddm_ra.grd
 
-#RESAMPLE ZTD FILES WITH UNWRAP GRID PARAMETERS
-set xmin = `gmt grdinfo -C phasefilt.grd|awk '{print $2}'`
-set xmax = `gmt grdinfo -C phasefilt.grd|awk '{print $3}'`
-set ymin = `gmt grdinfo -C phasefilt.grd|awk '{print $4}'`
-set ymax = `gmt grdinfo -C phasefilt.grd|awk '{print $5}'`
-set xinc = `gmt grdinfo -C phasefilt.grd|awk '{print $8}'`
-set yinc = `gmt grdinfo -C phasefilt.grd|awk '{print $9}'`
+#RESAMPLE ZTD FILES WITH WRAPPED GRID PARAMETERS
+#set xmin = `gmt grdinfo -C phasefilt.grd|awk '{print $2}'`
+#set xmax = `gmt grdinfo -C phasefilt.grd|awk '{print $3}'`
+#set ymin = `gmt grdinfo -C phasefilt.grd|awk '{print $4}'`
+#set ymax = `gmt grdinfo -C phasefilt.grd|awk '{print $5}'`
+#set xinc = `gmt grdinfo -C phasefilt.grd|awk '{print $8}'`
+#set yinc = `gmt grdinfo -C phasefilt.grd|awk '{print $9}'`
+#gmt grdsample zpddm_ra.grd -Gresample_zpddm.grd -R$xmin/$xmax/$ymin/$ymax -I$xinc/$yinc -r
+
+
+#RESAMPLE ZTD FILES WITH UNWRAPPED GRID PARAMETERS (edition 13/4/2023)
+set xmin = `gmt grdinfo -C unwrap.grd|awk '{print $2}'`
+set xmax = `gmt grdinfo -C unwrap.grd|awk '{print $3}'`
+set ymin = `gmt grdinfo -C unwrap.grd|awk '{print $4}'`
+set ymax = `gmt grdinfo -C unwrap.grd|awk '{print $5}'`
+set xinc = `gmt grdinfo -C unwrap.grd|awk '{print $8}'`
+set yinc = `gmt grdinfo -C unwrap.grd|awk '{print $9}'`
 gmt grdsample zpddm_ra.grd -Gresample_zpddm.grd -R$xmin/$xmax/$ymin/$ymax -I$xinc/$yinc -r
 
 
 #REFERENCE POINT
 set ref_value = `gmt grdtrack $reference_point -Gresample_zpddm.grd -Z`
-set ref_value_phase = `gmt grdtrack $reference_point -Gphasefilt.grd -Z`
-gmt grdmath resample_zpddm.grd $ref_value SUB = szpddm.grd
-gmt grdmath phasefilt.grd $ref_value_phase SUB = phasefilt_ref.grd
-
+#set ref_value_phase = `gmt grdtrack $reference_point -Gphasefilt.grd -Z`
+#Taking reference value from unwrap.grd (Edition: 13/4/2023)
+set ref_value_phase = `gmt grdtrack $reference_point -Gunwrap.grd -Z`
+gmt grdmath resample_zpddm.grd $ref_value SUB = szpddm.grd 
+#gmt grdmath phasefilt.grd $ref_value_phase SUB = phasefilt_ref.grd
+#Referencing unwrap.grd
+gmt grdmath unwrap.grd $ref_value_phase SUB = unwrap_ref.grd
+phasefilt_ref.grd
 #Checking reference point values
 if ($ref_value == "" || $ref_value_phase == "") then
     echo "Problems with the reference point. Is the reference point within the AOI?"
@@ -103,15 +117,15 @@ gmt grdmath szpddm.grd -4 MUL $pi MUL $wavelength DIV = szpddm_phase.grd
 gmt grdmath szpddm_phase.grd $incidence COSD DIV = szpddm_phase_LOS.grd
 
 #CORRECTION WITH GACOS DATA
-#attention: Here the phasefilt.grd is corrected, therefore for the unwrap process this output or the detrended output
-#should be used.
-gmt grdmath phasefilt_ref.grd szpddm_phase_LOS.grd SUB = phasefilt_GACOS_corrected.grd
+#gmt grdmath phasefilt_ref.grd szpddm_phase_LOS.grd SUB = phasefilt_GACOS_corrected.grd
+#Applying correction using unwrap_ref.grd instead. Edition 13/4/2023
+gmt grdmath unwrap_ref.grd szpddm_phase_LOS.grd SUB = unwrapped_GACOS_corrected.grd
 
 #DETRENDING
-gmt grdtrend phasefilt_GACOS_corrected.grd -N3r -Dphasefilt_GACOS_corrected_detrended.grd
+gmt grdtrend unwrapped_GACOS_corrected.grd -N3r -Dunwrapped_GACOS_corrected_detrended.grd
 
 #checking existence of final outputs
-if !(-f phasefilt_GACOS_corrected.grd || -f phasefilt_GACOS_corrected_detrended.grd) then
+if !(-f unwrapped_GACOS_corrected.grd || -f unwrapped_GACOS_corrected_detrended.grd) then
     echo "Seems like there was an issue correcting with GACOS $1 and $3"
     exit 1
 endif
@@ -121,6 +135,6 @@ endif
 rm date1_ztd.grd date2_ztd.grd
 rm zpddm.grd zpddm_ra.grd resample_zpddm.grd
 rm szpddm_phase.grd
-rm phasefilt_ref.grd
+rm unwrap_ref.grd
 rm szpddm_phase_LOS.grd
-echo "corrections done with $date_ztd_d1 and $date_ztd_d2 over phasefilt.grd" 
+echo "corrections done with $date_ztd_d1 and $date_ztd_d2 over unwrap.grd" 

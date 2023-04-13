@@ -10,7 +10,7 @@ if ($#argv != 5) then
     echo "Script needs to be run inside the intf_all folder" 
     echo "Performs gacos correction"
     echo ""
-    echo "list_interferograms: list of folders inside the intf_all folder containing the phases and coherence grids"
+    echo "list_interferograms: list of folders inside the intf_all folder containing the unwrap.grd files and coherence grids"
     echo ""
     echo "full_path_to_GACOS_data"
     echo "Example: /home/erikr/gacos/"
@@ -20,13 +20,12 @@ if ($#argv != 5) then
     echo ""
     echo "the topo folder needs to have: dem.grd, master.PRM, and the correspondant .LED file"
     echo ""
-    echo "list_interferograms: list of folders with interferograms created"
-    echo ""
     echo "Reference point in lon lat coordinates (text file)"
     echo ""
-    echo "Indicence angle in degrees from SAT_look (float/integer)"
+    echo "Indicence angle in degrees obtained with SAT_look (float/integer)"
     echo ""
-    echo "Outputs: phasefilt.grd files corrected and added as additional products in each interferogram folder. These outputs should be used for the unwrap processing"
+    echo "Outputs: unwrap.grd files corrected and added as additional products in each interferogram folder." 
+    echo "These outputs should be used for the SBAS time series analysis"
     exit 1
 endif
 
@@ -115,6 +114,10 @@ foreach dir (`awk '{print $1}' $list`)
 		cd $intf_dir
        	 	#Link trans.dat to each folder. Neccesary to project ztd grids to radar coordinates
         	ln -s $topo_dir"trans.dat"
+            if !(-e unwrap.grd) then
+                echo "unwrap.grd seems not to exists. Do unwrapping first"
+                exit 1
+            endif
         	operation.csh $first_ztd $first_rsc $second_ztd $second_rsc $reference_point_ra $incidence $dem_grd
         	rm trans.dat
 
