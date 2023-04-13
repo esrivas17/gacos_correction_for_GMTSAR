@@ -6,7 +6,7 @@
 
 if ($#argv != 5) then
     echo ""
-    echo "Usage: GACOS.csh list_interferograms full_path_to_GACOS_data full_path_topo reference_point incidence_angle"
+    echo "Usage: GACOS_correction.csh list_interferograms full_path_to_GACOS_data full_path_topo reference_point incidence_angle"
     echo "Script needs to be run inside the intf_all folder" 
     echo "Performs gacos correction"
     echo ""

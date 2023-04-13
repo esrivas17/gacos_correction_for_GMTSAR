@@ -99,9 +99,8 @@ set ref_value = `gmt grdtrack $reference_point -Gresample_zpddm.grd -Z`
 set ref_value_phase = `gmt grdtrack $reference_point -Gunwrap.grd -Z`
 gmt grdmath resample_zpddm.grd $ref_value SUB = szpddm.grd 
 #gmt grdmath phasefilt.grd $ref_value_phase SUB = phasefilt_ref.grd
-#Referencing unwrap.grd
+#Referencing unwrap.grd (Edition: 13/4/2023)
 gmt grdmath unwrap.grd $ref_value_phase SUB = unwrap_ref.grd
-phasefilt_ref.grd
 #Checking reference point values
 if ($ref_value == "" || $ref_value_phase == "") then
     echo "Problems with the reference point. Is the reference point within the AOI?"
