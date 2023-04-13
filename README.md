@@ -10,6 +10,9 @@ single_GACOS_correction.csh is intented to correct a single interferogram at a t
 
 GACOS_correction.csh and operation.csh are used to correct a stack of interferograms in a time series process
 
+ADDITIONALLY, since I was not very sure about the corrections applied to the unwrapped or wrapped phase.
+I added a new branch were the corrections are applied to the unwrap.grd files
+
 Feel free to use and edit the code if needed
 
 References:
