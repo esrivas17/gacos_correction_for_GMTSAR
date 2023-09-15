@@ -1,4 +1,4 @@
-**# GACOS CORRECTION FOR GMTSAR**
+## GACOS CORRECTION FOR GMTSAR
 These software is intended to correct unwrapped phases using GACOS grids for GMTSAR.
 
 They have been tested with: GMT v6.1.0 GMTSAR v6.0
@@ -7,10 +7,10 @@ On "Test_against_matlab" folder, I perform comparisons with matlab with consiste
 To reproduce the output just use: source command.txt in each folder.
 There is a small README file in each folder
 
-## SINGLE INTERFEROGRAM
+### SINGLE INTERFEROGRAM
 single_GACOS_correction.csh is intented to correct a single interferogram at a time with certain parameters
 
-## STACK OF INTERFEROGRAMS
+### STACK OF INTERFEROGRAMS
 GACOS_correction.csh and operation.csh are used to correct a stack of interferograms in a time series process
 
 Corrections are applied to the unwrap.grd files
